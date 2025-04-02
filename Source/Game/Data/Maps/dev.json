@@ -1,0 +1,77 @@
+{
+  "LevelBlock2": {
+    "position": {
+      "y": 232,
+      "x": 200
+    },
+    "size": {
+      "y": 18,
+      "x": 132
+    },
+    "OBJECTCLASS": "LevelBlock"
+  },
+  "LevelBlock3": {
+    "position": {
+      "y": 75,
+      "x": 250
+    },
+    "size": {
+      "y": 18,
+      "x": 75
+    },
+    "OBJECTCLASS": "LevelBlock"
+  },
+  "LevelBlock4": {
+    "position": {
+      "y": 0,
+      "x": 0
+    },
+    "size": {
+      "y": 360,
+      "x": 18
+    },
+    "OBJECTCLASS": "LevelBlock"
+  },
+  "LevelBlock5": {
+    "position": {
+      "y": 0,
+      "x": 622
+    },
+    "size": {
+      "y": 640,
+      "x": 18
+    },
+    "OBJECTCLASS": "LevelBlock"
+  },
+  "LevelSpawn": {
+    "initPlayerVelocity": {
+      "y": -40,
+      "x": 40
+    },
+    "position": {
+      "y": 260,
+      "x": 64
+    },
+    "radius": 8,
+    "OBJECTCLASS": "LevelSpawn"
+  },
+  "LevelGoal": {
+    "position": {
+      "y": 260,
+      "x": 608
+    },
+    "radius": 8,
+    "OBJECTCLASS": "LevelGoal"
+  },
+  "LevelBlock": {
+    "position": {
+      "y": 342,
+      "x": 0
+    },
+    "size": {
+      "y": 18,
+      "x": 12640
+    },
+    "OBJECTCLASS": "LevelBlock"
+  }
+}
