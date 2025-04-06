@@ -2,7 +2,7 @@ local GameObjectHashTree = require("Source.Game.Classes.game_object_hashTree")
 
 
 local Block = require("Source.Game.Objects.GameObjects.level_block")
-local Camera = require("Source.Core.camera")
+local Camera = require("Source.Core.Classes.camera")
 local Player = require("Source.Game.Objects.GameObjects.player")
 local Spawn = require("Source.Game.Objects.GameObjects.level_spawn")
 local Goal = require("Source.Game.Objects.GameObjects.level_goal")

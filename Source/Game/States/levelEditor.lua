@@ -1,5 +1,5 @@
 local GameObjectHashTree = require("Source.Game.Classes.game_object_hashTree")
-local Camera = require("Source.Core.camera")
+local Camera = require("Source.Core.Classes.camera")
 
 
 local ToolModules = {

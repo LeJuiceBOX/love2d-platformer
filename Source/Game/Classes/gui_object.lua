@@ -1,5 +1,5 @@
 
-local HashTreeObject = require("Source.Core.hashTree_object_base")
+local HashTreeObject = require("Source.Core.Classes.hashTree_object")
 
 local GuiObject = Class("GuiObject",HashTreeObject)
 

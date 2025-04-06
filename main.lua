@@ -2,15 +2,15 @@
 FIXED_FRAMERATE = 1/60 -- run fixed update 60 times/s
 DRAW_FRAMERATE = 60
 
-HC = require("Source.Core.HC")
+HC = require("Source.Core.HardonCollider")
 -- Load core into game
-Color = require("Source.Core.color")
-Assets = require("Source.Core.assets")
+Color = require("Source.Core.Classes.color")
+Assets = require("Source.Core.Services.assets")
 Json = require("Source.Core.Libraries.json")
-Gamestate = require("Source.Core.gamestate")
+Gamestate = require("Source.Core.Services.gamestate")
 -- Load game core
 LevelSaver = require("Source.Game.Libraries.levelSaver")
-Collider = require("Source.Core.collider")
+Collider = require("Source.Core.Components.collider")
 
 States = {
     Menu = require("Source.Game.States.menu"),
@@ -20,7 +20,7 @@ States = {
 }
 
 function love.keypressed(key)
-    if key == 'q' then
+    if key == 'q' then  
         love.event.push("quit")
     elseif key == 'escape' then
         Gamestate.switch(States.Menu)

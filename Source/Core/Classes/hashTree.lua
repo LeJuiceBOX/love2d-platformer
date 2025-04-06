@@ -1,7 +1,7 @@
 
 
 -- create tree root class
-local TreeObjectBase = require("Source.Core.hashTree_object_base")
+local TreeObjectBase = require("Source.Core.Classes.hashTree_object")
 
 local TreeRoot = Class("TreeRoot",TreeObjectBase)
 function TreeRoot:initialize() end

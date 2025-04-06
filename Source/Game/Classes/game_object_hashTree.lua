@@ -1,4 +1,4 @@
-local HashTree = require("Source.Core.hashTree")
+local HashTree = require("Source.Core.Classes.hashTree")
 
 local GameObjectHashTree = Class("GameObjectHashTree",HashTree)
 
