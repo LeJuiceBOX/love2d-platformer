@@ -4,6 +4,7 @@ local GameObject = Class("GameObject",HashTreeObjectBase)
 
 function GameObject:initialize()
     HashTreeObjectBase.initialize(self)
+    self.layer = 1
     self.position = Vector(0,0)
 end
 

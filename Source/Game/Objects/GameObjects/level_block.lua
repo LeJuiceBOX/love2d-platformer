@@ -9,6 +9,7 @@ local LevelBlock = Class("LevelBlock",GameObject)
         self.position = Vector(x or 0,y or 0)
         self.size = Vector(w or 1,h or 1) -- size set to 1 so we can scale the collider
         self.collider = Collider:new(self,"floor",HC.rectangle(self.position.x,self.position.y,self.size.x,self.size.y))
+        self.layer = 5
     end
 
     function LevelBlock:OnDestroy()

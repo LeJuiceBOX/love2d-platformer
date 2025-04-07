@@ -19,7 +19,7 @@ local LevelGoal = Class("LevelGoal",GameObject)
     
     function LevelGoal:load()
         self.collider = Collider(self,'goal',HC.circle(self.position.x,self.position.y,self.radius))
-        self.signal_playerTouchedGoal = SignalSystem:newSignal(self.hash.."-PlayerTouchedGoal")
+        self.signal_playerTouchedGoal = SignalService:newSignal(self.hash.."-PlayerTouchedGoal")
     end
 
     function LevelGoal:update(dt)

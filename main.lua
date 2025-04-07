@@ -11,6 +11,7 @@ Gamestate = require("Source.Core.Services.gamestate")
 -- Load game core
 LevelSaver = require("Source.Game.Libraries.levelSaver")
 Collider = require("Source.Core.Components.collider")
+ 
 
 States = {
     Menu = require("Source.Game.States.menu"),
@@ -19,6 +20,27 @@ States = {
     Level_1 = require("Source.Game.States.Levels.level_1")
 }
 
+GameSignals = {
+    DrawGame = SignalService:newSignal("game.DrawGame"),
+    DrawGui = SignalService:newSignal("game.DrawGui"),
+    Update = SignalService:newSignal("game.Update"),
+    FixedUpdate = SignalService:newSignal("game.FixedUpdate"),
+}
+
+function love.load()
+    Gamestate.registerEvents()
+    Gamestate.switch(States.Menu)
+end
+
+function love.update(dt)
+    
+end
+
+function love.draw(dt)
+    
+end
+
+
 function love.keypressed(key)
     if key == 'q' then  
         love.event.push("quit")
@@ -26,11 +48,3 @@ function love.keypressed(key)
         Gamestate.switch(States.Menu)
     end
 end
-
-function love.load()
-    Gamestate.registerEvents()
-    Gamestate.switch(States.Menu)
-end
-
-function love.update(dt) end
-function love.draw(dt) end

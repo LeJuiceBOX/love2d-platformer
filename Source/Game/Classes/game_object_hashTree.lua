@@ -15,9 +15,9 @@ function GameObjectHashTree:initialize()
 -- GameObjectHashTree
     HashTree.initialize(self,"GameObject",GameObject)
     self.requiredObjectClass = "GameObject"
+    self._drawOrder = {}
     self._fdt = 0
 end
-
 
 function GameObjectHashTree:destroyAll()
     print("Destroying all gameObjects...")
@@ -52,14 +52,34 @@ function GameObjectHashTree:update(dt)
 end
 
 function GameObjectHashTree:draw()
-    for hash, data in pairs(self._treeHash) do
-        local obj = data.object
-        if obj.visible then
-            if data.object.draw ~= nil then
-                obj:draw()
-            end 
+    for layer, object in pairs(self._drawOrder) do
+        if object.visible then
+            object:draw()
         end
     end
+end
+
+function GameObjectHashTree:generateDrawOrder()
+    self._drawOrder = {}
+    local function generateOrderFromChildren(object)
+        local objectsWithChildren = {}
+        local runningLayerTotal = 0
+        for _,hash in pairs(self:getHash(object.hash).children) do
+            local data = self:getHash(hash)
+            local children = #data.children
+            if children > 0 then
+                table.insert(objectsWithChildren,data.object)
+            end
+            if data.object.layer > 0 and data.object.draw then
+                runningLayerTotal = runningLayerTotal + data.object.layer
+                self._drawOrder[runningLayerTotal] = data.object
+            end
+        end
+        for _,obj in pairs(objectsWithChildren) do
+            generateOrderFromChildren(obj)
+        end
+    end
+    generateOrderFromChildren(self:root())
 end
 
 return GameObjectHashTree

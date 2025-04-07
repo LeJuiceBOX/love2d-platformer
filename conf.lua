@@ -116,8 +116,9 @@ function love.conf(t)
         return false
     end
 end
+
 Class = require("Source.Core.middleclass")
 Vector = require("Source.Core.Classes.vector")
 UDim2 = require("Source.Game.Classes.udim")
 GameObject = require("Source.Game.Classes.game_object")
-SignalSystem = require("Source.Core.Services.signals"):new()
+SignalService = require("Source.Core.Services.signals"):new()

@@ -45,6 +45,8 @@ function lvl:enter()
         self.spawn:resetPlayer()
         print("Goal reached!")
     end)
+
+    self.workspace:generateDrawOrder()
 end
 function lvl:leave()
     for _,connection in pairs(self.connections) do
@@ -69,8 +71,8 @@ function lvl:draw()
     love.graphics.reset()
     self.workspace:draw()
     love.graphics.setColor(0.1,1,0.1) 
-    local ram = math.ceil(collectgarbage('count')/1024)
-    love.graphics.print("FPS: "..love.timer.getFPS().."\tGC: "..tostring(ram).." Mb")
+    local gc = math.ceil(collectgarbage('count')/1024)
+    love.graphics.print("FPS: "..love.timer.getFPS().."\tGC: "..tostring(gc).." Mb")
 end
 
 
