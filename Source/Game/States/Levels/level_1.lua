@@ -30,11 +30,13 @@ end
 
 function lvl:enter()
     HC.resetHash()
+    self.mapObjects = self.root:addChild(GameObject(),"MapObjects")
+    self.mapObjects.layer = 1
     for name,object in pairs(LevelSaver.loadMapObjectsFromFile("Source/Game/Data/Maps/dev.json")) do
-        self.root:addChild(object,name)
+        self.mapObjects:addChild(object,name)
     end
-    self.goal = self.root:findFirstChild("LevelGoal")
-    self.spawn = self.root:findFirstChild("LevelSpawn")
+    self.goal = self.mapObjects:findFirstChild("LevelGoal")
+    self.spawn = self.mapObjects:findFirstChild("LevelSpawn")
     self.player = self.root:addChild(Player:new(),"Player")
     
     self.spawn.player = self.player

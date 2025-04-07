@@ -15,7 +15,7 @@ function GameObjectHashTree:initialize()
 -- GameObjectHashTree
     HashTree.initialize(self,"GameObject",GameObject)
     self.requiredObjectClass = "GameObject"
-    self._drawOrder = {}
+    self._drawTree = {}
     self._fdt = 0
 end
 
@@ -52,34 +52,41 @@ function GameObjectHashTree:update(dt)
 end
 
 function GameObjectHashTree:draw()
-    for layer, object in pairs(self._drawOrder) do
-        if object.visible then
+    for i, object in pairs(self._drawTree) do
+        if object.visible and object.draw then
             object:draw()
         end
     end
 end
 
 function GameObjectHashTree:generateDrawOrder()
-    self._drawOrder = {}
-    local function generateOrderFromChildren(object)
-        local objectsWithChildren = {}
-        local runningLayerTotal = 0
-        for _,hash in pairs(self:getHash(object.hash).children) do
+     self._drawTree = {}
+     local function addChildrenToList(object)
+        local ordered = {}
+        for i,hash in pairs(self:getHash(object.hash).children) do
             local data = self:getHash(hash)
-            local children = #data.children
-            if children > 0 then
-                table.insert(objectsWithChildren,data.object)
-            end
-            if data.object.layer > 0 and data.object.draw then
-                runningLayerTotal = runningLayerTotal + data.object.layer
-                self._drawOrder[runningLayerTotal] = data.object
+            table.insert(ordered,{
+                object = data.object,
+                hash = data.object.hash,
+                layer = data.object.layer,
+            })
+        end
+        table.sort(ordered,function (e1,e2)
+            return e1.layer < e2.layer
+        end)
+        for i,v in pairs(ordered) do
+            if #self:getHash(v.hash).children > 0 then
+                addChildrenToList(v.object)
+            else
+                table.insert(self._drawTree,v.object)
             end
         end
-        for _,obj in pairs(objectsWithChildren) do
-            generateOrderFromChildren(obj)
-        end
-    end
-    generateOrderFromChildren(self:root())
+     end
+     addChildrenToList(self:root())
+    --  print("Draw Tree ~")
+    --  for i,v in pairs(self._drawTree) do
+    --     print(i,v)
+    --  end
 end
 
 return GameObjectHashTree

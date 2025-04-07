@@ -6,6 +6,9 @@ local Player = Class("Player",GameObject)
 
 function Player:initialize()
     GameObject.initialize(self)
+    --
+    self.layer = 0
+    --
     self.position = Vector(0,0)
     self.collider = Collider:new(self,'player',HC.rectangle(self.position.x,self.position.y,DEFAULT_SIZE.x,DEFAULT_SIZE.y))
     self.size = DEFAULT_SIZE
