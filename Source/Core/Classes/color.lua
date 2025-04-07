@@ -14,7 +14,7 @@ local Color = Class("Color")
     end
 
     function Color:unpack()
-        return self.rgb[1]/255,self.rgb[2]/255,self.rgb[3]/255
+        return self.rgb[1]/255,self.rgb[2]/255,self.rgb[3]/255,self.alpha
     end
 
     function Color:unpackRGB()

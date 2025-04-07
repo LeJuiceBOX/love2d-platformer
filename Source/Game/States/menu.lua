@@ -23,6 +23,12 @@ menu.buttons = {
         end
     },
     {
+        text = "Testing",
+        callback = function()
+            Gamestate.switch(require("Source.Game.States.testing"))
+        end
+    },
+    {
         text = "Dev Level",
         callback = function()
             Gamestate.switch(require("Source.Game.States.level_dev"))

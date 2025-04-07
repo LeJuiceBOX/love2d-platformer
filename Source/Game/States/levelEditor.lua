@@ -1,6 +1,6 @@
 local GameObjectHashTree = require("Source.Game.Classes.game_object_hashTree")
 local Camera = require("Source.Core.Classes.camera")
-
+local Select = require("Source.Editor.Classes.select")
 
 local ToolModules = {
     Move = require("Source.Editor.Tools.move"),
@@ -19,7 +19,7 @@ local state = {}
 function state:init()
     self.levelWorkspace = GameObjectHashTree:new()
     self.levelWorkspace:root():addChild(EditorObjects.Block:new(400,200,64,64),"DefaultSquare")
-
+    self.selectionHandler = Select:new()
     camera = Camera(0,0)
     -- setup tool frame
 end

@@ -1,4 +1,5 @@
 
+local Trail = require("Source.Core.Components.trail")
 
 local DEFAULT_SIZE = Vector(24,42)
 
@@ -39,12 +40,18 @@ function Player:initialize()
     self._oldPos = self.position
     self._numJumps = 0
     self._timeInAir = 0
-
-
+    
+    
     self.OnDestroy = function()
         self.collider:destroy()
         self = nil
     end
+    
+    self.trail = Trail(self,10,function (pos,alpha)
+        love.graphics.setColor(0.24,0.24,1,alpha)
+        love.graphics.rectangle("fill",pos.x,pos.y,self.size.x,self.size.y)
+    end)
+    self.trail.enabled = false
 end
 
 function Player:load()
@@ -128,6 +135,10 @@ function Player:fixedUpdate(dt)
         accel.x = 0
     end
 
+    -- handle trail when going faster than max speed
+    self.trail.enabled = ((self.velocity.x > self.maxRunSpeed+5) or (self.velocity.x < -self.maxRunSpeed-5))
+
+
     self.velocity = self.velocity + accel
 
     -- handle gravity
@@ -185,10 +196,12 @@ function Player:fixedUpdate(dt)
     -- add vel to pos
     local vel = self.velocity/10
     self:move(vel.x,vel.y)
+    self.trail:update(dt)
 end
 
 function Player:draw()
     --self.floorCollider:draw()
+    self.trail:draw()
     love.graphics.setColor(0.24,0.24,1)
     love.graphics.rectangle("fill",self.position.x,self.position.y,self.size.x,self.size.y)
     love.graphics.setColor(1,1,1)

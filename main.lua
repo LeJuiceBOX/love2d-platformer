@@ -20,12 +20,6 @@ States = {
     Level_1 = require("Source.Game.States.Levels.level_1")
 }
 
-GameSignals = {
-    DrawGame = SignalService:newSignal("game.DrawGame"),
-    DrawGui = SignalService:newSignal("game.DrawGui"),
-    Update = SignalService:newSignal("game.Update"),
-    FixedUpdate = SignalService:newSignal("game.FixedUpdate"),
-}
 
 function love.load()
     Gamestate.registerEvents()
