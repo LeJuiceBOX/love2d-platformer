@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global, unbalanced-assignments
 --[[
 Copyright (c) 2011 Matthias Richter
 
