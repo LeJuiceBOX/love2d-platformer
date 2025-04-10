@@ -12,7 +12,12 @@ function lvl:init()
     self.root = self.workspace:root()
     self.player = nil
 
-    self.connections = {}
+    self.connections = {
+        OnDragging = InputService.OnDragging:connect(function(x,y,dx,dy)
+            self.player:moveTo(x,y)
+            self.player.velocity = Vector(0,0)
+        end)
+    }
 
     -- insert all loaded map objs to self.workspace
 
@@ -62,10 +67,6 @@ end
 
 function lvl:update(dt)
     -- handle update
-    if love.mouse.isDown(1) then
-        self.player:moveTo(love.mouse.getPosition())
-        self.player.velocity = Vector(0,0)
-    end
     self.workspace:update(dt)
 end
 

@@ -13,6 +13,7 @@ function TreeObjectBase:initialize()
     --
     self.visible = true
     self.enabled = true
+    self.OnChildAdded = SignalService:newSignal()
 end
 
 
@@ -21,7 +22,7 @@ function TreeObjectBase:getTreeData()
 end
 
 function TreeObjectBase:parent()
-    local this = self:getTreeData()
+    local this = self.tree:getHash(self.hash)
     return self.tree:getHash(this.parent).object
 end
 
@@ -82,6 +83,7 @@ end
 
 function TreeObjectBase:addChild(object,name)
     local hash = self.tree:registerObject(name,object,self)
+    self.OnChildAdded:fire(self.tree:getHash(hash).object)
     return self.tree:getHash(hash).object
 end
 

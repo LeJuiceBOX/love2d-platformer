@@ -60,7 +60,7 @@ function HashTree:createRoot(rootObj)
     rootObj.hash = newHash
     rootObj.tree = self
     self.treeRootHash = newHash
-    print("Created root.")
+    --print("Created root.")
 end
 
 function HashTree:root()
@@ -177,6 +177,9 @@ function HashTree:register(name,newObject,parentObject)
     }
     local parDat = self:getHash(parentObject.hash)
     parDat.children[#parDat.children+1] = newHash
+    if self._treeHash[newHash].object.load then
+        self._treeHash[newHash].object:load()
+    end
     -- print("Children:")
     -- print(parentObject.name)
     -- for i,v in pairs(self:getHash(parentObject.hash).children) do
@@ -205,10 +208,21 @@ function HashTree:handleDestructionQueue()
         if data.destroyThisFrame == false then
             self._queuedForDeletion[hash].destroyThisFrame = true
         elseif data.destroyThisFrame == true then
-            print("Obj: "..tostring(data.object))
+            --print("Obj: "..tostring(data.object))
             self:destroyImmediately(data.object)
         end
     end
+end
+
+function HashTree:destroyCleanly(object)
+    if object.name == "Root" then self._queuedForDeletion[object.hash] = nil; return; end
+    object.enabled = false
+    if object.destroy then
+        object:OnDestroy()
+    end
+    self:unregisterObject(object)
+    self._queuedForDeletion[object.hash] = nil
+    collectgarbage()
 end
 
 function HashTree:destroyImmediately(object)
@@ -217,8 +231,15 @@ function HashTree:destroyImmediately(object)
     if object.destroy then
         object:OnDestroy()
     end
+    -- detag object
+    for tagName,data in pairs(self._tags) do
+        for i,hash in pairs(data) do
+            if hash == object.hash then
+                table.remove(self._tags[tagName],i)
+            end
+        end
+    end
     self._queuedForDeletion[object.hash] = nil
-    self:unregisterObject(object)
     collectgarbage()
 end
 

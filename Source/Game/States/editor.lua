@@ -1,39 +1,63 @@
+local Spawn = require("Source.Game.Objects.GameObjects.level_spawn")
+local Goal = require("Source.Game.Objects.GameObjects.level_goal")
+
 local GameObjectHashTree = require("Source.Game.Classes.game_object_hashTree")
 local GuiHashTree = require("Source.Game.Classes.gui_hashTree")
 
 local Camera = require("Source.Core.Classes.camera")
-local Select = require("Source.Editor.Classes.select")
+local Frame = require("Source.Game.Objects.GuiObjects.frame")
+local ListLayout = require("Source.Game.Objects.GuiObjects.listLayout")
+local Label = require("Source.Game.Objects.GuiObjects.label")
+local Button = require("Source.Game.Objects.GuiObjects.button")
 
-local ToolModules = {
-    Move = require("Source.Editor.Tools.move"),
-    Resize = require("Source.Editor.Tools.resize"),
-}
+local cameraSpeed = 150
+local gridSpacing = 16
 
 local EditorObjects = {
     Block = require("Source.Game.Objects.GameObjects.level_block")
 }
 
-local cameraSpeed = 150
-local gridSpacing = 16
 
-local state = {}
+local editor = {}
 
-function state:enter()
-    
-    self.gui = require("Source.Editor.Data.Guis.levelEditor")
-end
-
-function state:init()
-    print(self.gui)
+function editor:init()
     self.levelWorkspace = GameObjectHashTree:new()
     self.levelWorkspace:root():addChild(EditorObjects.Block:new(400,200,64,64),"DefaultSquare")
-    self.selectionHandler = Select:new()
     camera = Camera(0,0)
-    self.gui:printTree()
-    -- setup tool frame
+    
+    self.gui = GuiHashTree()
+    
+    self.window = self.gui:root():addChild(Frame(),"Window")-- scale doesnt work on the root for some reason, wrap everything in another frame to work normally
+    self.window.size = UDim2(0,0,1280,720)
+    self.window.color = Color(255,255,255,0)
+    
+    self.frame = self.window:addChild(Frame(),"Frame")
+    self.frame.color = Color(15,15,55,1)
+    self.frame.size = UDim2(0.2,1,0,0)
+    
+    self.listLayout = self.frame:addChild(ListLayout())
+    
+    for i = 1 ,12 do
+        self.frame:addChild(Button(),"button_"..tostring(i))
+    end
+    
 end
 
-function state:update(dt)
+function editor:enter()
+
+end
+
+function editor:leave()
+    self.gui:destroyAll()
+end
+
+function editor:keypressed(key)
+    if key == 'space' then
+        print(self.frame.absoluteSize)
+    end
+end
+
+function editor:update(dt)
     local speed = cameraSpeed
 
     if love.keyboard.isDown('w') then
@@ -47,12 +71,11 @@ function state:update(dt)
         camera:move(-speed*dt,0)
     end
     --Block:update(dt)
-    self.gui:update(dt)
     self.levelWorkspace:update(dt)
+    self.gui:update(dt)
 end
 
-function state:draw()
-    self.gui:draw()
+function editor:draw()
     camera:attach()
     Color(200,200,200,0.5):set()
     love.graphics.line(0,-720,0,720)  -- horiz origin 
@@ -63,37 +86,14 @@ function state:draw()
         local x = gridSpacing*i
         love.graphics.line(x-1280,-720,x-1280,720) 
     end
-
     for i = 1, ((720*2)/gridSpacing) do
         local y = gridSpacing*i
         love.graphics.line(-1280,y-720,1280,y-720) -- vert origin 
     end
-
-
     Color.reset()
     self.levelWorkspace:draw()
     camera:detach()
-
-    -- --if ToolBelt.currentTool then
-    --     love.graphics.print("CurrentTool: "..ToolBelt.currentTool.name)
-    -- else
-    --     love.graphics.print("CurrentTool: none")
-    -- end
+    self.gui:draw()
 end
 
-function state:keypressed(key)
-    if key == 'r' then
-        return
-    end
-
-end
-
-function state:keyreleased(key)
-
-end
-
-function state:mousereleased(x,y,button)
-
-end
-
-return state
+return editor

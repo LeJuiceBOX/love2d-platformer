@@ -19,7 +19,7 @@ menu.buttons = {
     {
         text = "Level Editor",
         callback = function()
-            Gamestate.switch(require("Source.Game.States.levelEditor"))
+            Gamestate.switch(require("Source.Game.States.editor"))
         end
     },
     {
@@ -37,6 +37,10 @@ menu.buttons = {
 }
 
 function menu:init()
+
+end
+
+function menu:enter()
     self.gui = Gui()
 
     self.window = self.gui:root():addChild(Frame(),"Window")-- scale doesnt work on the root for some reason, wrap everything in another frame to work normally
@@ -66,20 +70,10 @@ function menu:init()
         o.OnClick = v.callback
         menu.buttons[i].buttonObj = o
     end
-
-
-
-
-    --self.gui:calculateAbsolutes()
-    self.gui:printTree()
-end
-
-function menu:enter()
-
 end
 
 function menu:leave()
-    
+    self.gui:destroyAll()
 end
 
 function menu:keypressed(key)

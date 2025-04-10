@@ -79,6 +79,7 @@ function SignalService:print()
 end
 
 function SignalService:newSignal(signalName)
+    if signalName == nil then signalName = self:uuid(love.math.random) end
     assert(self._signals[signalName] == nil,"Signal already exists. ('"..tostring(signalName).."')")
     self._signals[signalName] = Signal:new(self,signalName)
     return self._signals[signalName]

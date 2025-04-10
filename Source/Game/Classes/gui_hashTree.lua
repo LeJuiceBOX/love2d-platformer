@@ -9,6 +9,12 @@ end
 
 function GuiHashTree:createRoot(rootObj)
     local newHash = self:newHash()
+    local rootObj = rootObj
+    rootObj.name = "Root"
+    rootObj.hash = newHash
+    rootObj.tree = self
+    rootObj.size = UDim2(0,0,love.graphics.getWidth(),love.graphics.getHeight())
+
     self._treeHash[newHash] = {
         id = newHash,
         name = "Root",
@@ -16,13 +22,16 @@ function GuiHashTree:createRoot(rootObj)
         parent = nil,
         children = {}
     }
-    rootObj.name = "Root"
-    rootObj.hash = newHash
-    rootObj.tree = self
-    rootObj.parentPosition = UDim2(0,0,0,0)
-    rootObj.parentSize = UDim2(0,0,love.graphics.getWidth(),love.graphics.getHeight())
     self.treeRootHash = newHash
     print("Created root.")
+end
+
+function GuiHashTree:destroyAll()
+    print("Destroying all gameObjects...")
+    for hash,data in pairs(self._treeHash) do
+        --print(data.object)
+        self:destroyImmediately(data.object)
+    end
 end
 
 function GuiHashTree:registerObject(name, newObject, parentObject,skipValidation)
@@ -37,6 +46,7 @@ function GuiHashTree:calculateAbsolutes()
 end
 
 function GuiHashTree:update(dt)
+    self:handleDestructionQueue()
     self:calculateAbsolutes()
 
     for hash,data in pairs(self._treeHash) do

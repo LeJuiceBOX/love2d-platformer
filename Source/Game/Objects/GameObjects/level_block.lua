@@ -50,7 +50,7 @@ local LevelBlock = Class("LevelBlock",GameObject)
     
     function LevelBlock:draw()
         Color.reset()
-        self.collider:draw('line')
+        self.collider:draw('fill')
     end
 
 

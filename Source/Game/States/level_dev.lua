@@ -12,7 +12,12 @@ function lvl:init()
     self.player = nil
     self.workspace = GameObjectHashTree()
 
-    self.connections = {}
+    self.connections = {
+        OnDragging = InputService.OnDragging:connect(function(x,y,dx,dy)
+            self.player:moveTo(x,y)
+            self.player.velocity = Vector(0,0)
+        end)
+    }
 
     --self.root:addChild(Block:new(32,32,64,64),"Box2")
     --self.root:addChild(Block:new(96,96,124,124),"Box2")
@@ -59,11 +64,6 @@ end
 function lvl:update(dt)
     -- handle update
     self.workspace:update(dt)
-
-    if love.mouse.isDown(1) then
-        self.player:moveTo(love.mouse.getPosition())
-        self.player.velocity = Vector(0,0)
-    end
 end
 
 function lvl:draw()

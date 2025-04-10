@@ -284,16 +284,16 @@ end
 
 function collectInput()
     local axis = Vector.new(0,0)
-    if love.keyboard.isDown("w") then
+    if InputService:keyDown("w") then
         axis = axis + Vector.new(0,1)
     end
-    if love.keyboard.isDown("d") then
+    if InputService:keyDown("d") then
         axis = axis + Vector.new(1,0)
     end
-    if love.keyboard.isDown("a") then
+    if InputService:keyDown("a") then
         axis = axis + Vector.new(-1,0)
     end
-    return axis
+    return axis:normalized()
 end
 
 return Player
