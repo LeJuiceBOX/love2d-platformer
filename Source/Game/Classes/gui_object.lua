@@ -12,6 +12,14 @@ function GuiObject:initialize()
     self.absolutePosition = Vector()
 end
 
+function GuiObject:addChild(object,name)
+    local obj = GameObject.super.addChild(self,object,name)
+    if obj.load ~= nil then
+        obj:load()
+    end
+    return obj
+end
+
 function GuiObject:calculateAbsolutes()
     local this = self.tree:getHash(self.hash)
     local parentPosition = Vector()

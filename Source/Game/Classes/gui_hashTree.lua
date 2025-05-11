@@ -30,7 +30,7 @@ function GuiHashTree:destroyAll()
     print("Destroying all gameObjects...")
     for hash,data in pairs(self._treeHash) do
         --print(data.object)
-        self:destroyImmediately(data.object)
+        self:destroyCleanly(data.object)
     end
 end
 

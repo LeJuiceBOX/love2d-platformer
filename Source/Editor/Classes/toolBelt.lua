@@ -1,6 +1,6 @@
 
 
-local Select = require("editor.classes.select")
+local Select = require("Source.Editor.Classes.select")
 local Toolbelt = Class("Toolbelt")
 
 function Toolbelt:initialize()

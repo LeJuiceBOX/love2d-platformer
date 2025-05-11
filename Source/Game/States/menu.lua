@@ -37,31 +37,24 @@ menu.buttons = {
 }
 
 function menu:init()
-
-end
-
-function menu:enter()
     self.gui = Gui()
-
+    
     self.window = self.gui:root():addChild(Frame(),"Window")-- scale doesnt work on the root for some reason, wrap everything in another frame to work normally
     self.window.size = UDim2(0,0,1280,720)
     self.window.color = Color(255,255,255,0)
-
+    
     self.frame = self.window:addChild(Frame(),"Frame")
     self.frame.size = UDim2(0.2,1,0,0)
-
+    
     self.test = self.window:addChild(Frame(),"TestFrame")
     self.test.anchorPoint = Vector(0.5,0.5)
     self.test.size = UDim2(0.1,0.1,0,0)
     self.test.position = UDim2(0.5,0.5,0,0)
-
+    
     self.label = self.test:addChild(Label("Testing"),"Label")
     self.label.anchorPoint = Vector(0.5,0.5)
-    self.label.position = UDim2(0.5,0.5,0,0)
+    self.label.position = UDim2(0.5,0.5,0,0) 
     self.label.textColor = Color(0,0,0)
-
-
-
     for i,v in pairs(menu.buttons) do
         local o = self.frame:addChild(Button(),"Button")
         o.position = UDim2:new(0,0,8,8+(40*(i-1)))
@@ -72,8 +65,14 @@ function menu:enter()
     end
 end
 
+function menu:enter()
+
+
+
+end
+
 function menu:leave()
-    self.gui:destroyAll()
+    --self.gui:destroyAll()
 end
 
 function menu:keypressed(key)

@@ -42,16 +42,15 @@ function Player:initialize()
     self._timeInAir = 0
     
     
-    self.OnDestroy = function()
-        self.collider:destroy()
-        self = nil
-    end
-    
     self.trail = Trail(self,10,function (pos,alpha)
         love.graphics.setColor(0.24,0.24,1,alpha)
         love.graphics.rectangle("fill",pos.x,pos.y,self.size.x,self.size.y)
     end)
     self.trail.enabled = false
+end
+
+function Player:OnDestroy()
+    self.collider:destroy()
 end
 
 function Player:load()

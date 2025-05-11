@@ -4,6 +4,8 @@ DRAW_FRAMERATE = 60
 
 HC = require("Source.Core.HardonCollider")
 -- Load core into game
+SignalService = require("Source.Core.Services.signals"):new()
+InputService = require("Source.Core.Services.input"):new()
 Color = require("Source.Core.Classes.color")
 Assets = require("Source.Core.Services.assets")
 Json = require("Source.Core.Libraries.json")
@@ -11,7 +13,6 @@ Gamestate = require("Source.Core.Services.gamestate")
 -- Load game core
 LevelSaver = require("Source.Game.Libraries.levelSaver")
 Collider = require("Source.Core.Components.collider")
-InputService = require("Source.Core.Services.input"):new()
 
 States = {
     Menu = require("Source.Game.States.menu"),
@@ -32,6 +33,7 @@ end
 
 function love.draw(dt)
     InputService:draw()
+    SignalService:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)

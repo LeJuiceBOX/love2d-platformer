@@ -1,5 +1,5 @@
 
-
+local acc = 0
 local TreeObjectBase = Class("TreeObjectBase")
 
 TreeObjectBase.OnDestroy = function(self) end
@@ -13,7 +13,8 @@ function TreeObjectBase:initialize()
     --
     self.visible = true
     self.enabled = true
-    self.OnChildAdded = SignalService:newSignal()
+    self.OnChildAdded = SignalService:newSignal("OnChildAdded_"..tostring(acc))
+    acc=acc+1
 end
 
 
@@ -31,6 +32,8 @@ function TreeObjectBase:rename(name)
 end
 
 function TreeObjectBase:destroy()
+    print("Desttryosadf!")
+    
     self.tree:destroyImmediately(self)
 end
 

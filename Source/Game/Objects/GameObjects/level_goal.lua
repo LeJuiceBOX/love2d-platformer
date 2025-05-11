@@ -10,11 +10,12 @@ local LevelGoal = Class("LevelGoal",GameObject)
         self.collider = Collider(self,'goal',HC.circle(self.position.x,self.position.y,self.radius))
         self.player = nil
         self.signal_playerTouchedGoal = nil
-
-        self.OnDestroy = function()
-            self.collider:destroy()
-            self.signal_playerTouchedGoal:destroy()
-        end
+    end
+    
+    function LevelGoal:OnDestroy()
+        print("Destroying!")  
+        self.collider:destroy()
+        self.signal_playerTouchedGoal:destroy()
     end
     
     function LevelGoal:load()

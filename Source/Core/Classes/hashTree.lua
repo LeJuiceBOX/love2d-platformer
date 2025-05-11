@@ -16,7 +16,7 @@ function HashTree:initialize(requiredClassName,rootClassObj)
     assert(requiredClassName,"Parameter is missing. (requiredClass)")
     assert(typeof(requiredClassName) == 'string',"RequiredClass must be of type 'string'. (got "..typeof(requiredClassName)..")")
     self._queuedForDeletion = {}
-    self._treeHash = {}
+    self._treeHash = setmetatable({},{__mode = 'k'})
     self._tags = {}
     self.treeRootHash = nil
     self.rootClassObj = rootClassObj
@@ -75,6 +75,13 @@ function HashTree:getHash(hash)
     assert(self:isValidHash(hash),"Malformed hash. (got '"..tostring(hash).."')")
     assert(self._treeHash[hash],"No object attached to this hash. ("..tostring(hash)..")")
     return self._treeHash[hash]
+end
+
+function HashTree:hashExists(hash)
+    assert(hash,"hash is required. (got t:"..typeof(hash).."  v:'"..tostring(hash).."')")
+    assert(typeof(hash) == 'string',"hash must be a string. (expected 'string' got "..typeof(hash).."))")
+    assert(self:isValidHash(hash),"Malformed hash. (got '"..tostring(hash).."')")
+    return (self._treeHash[hash] ~= nil)
 end
 
 function HashTree:renameObject(object,name)
@@ -138,7 +145,7 @@ end
 
 function HashTree:unregisterObject(object)
     if typeof(object) == "TreeRoot" or object.name == "Root" then return; end
-    if object == nil then return; end
+    if object == nil or self:hashExists(object.hash) then return; end
     -- detag object
     for tagName,data in pairs(self._tags) do
         for i,hash in pairs(data) do
@@ -148,15 +155,32 @@ function HashTree:unregisterObject(object)
         end
     end
     local hashTreeObj = self:getHash(object.hash)
+    for property,value in pairs(hashTreeObj.object) do
+        print(property,value)
+        if typeof(value) == "Signal" then
+            value:destroy()
+        end
+    end
     -- remove object from parent's children
-    if hashTreeObj.parent then
+    if hashTreeObj.parent and self:hashExists(hashTreeObj.parent) then
         for i,childHash in pairs(self:getHash(hashTreeObj.parent).children) do
             table.remove(self:getHash(hashTreeObj.parent).children,i)
         end
     end
     -- reparent children to object parent
     for i,childHash in pairs(hashTreeObj.children) do
-        self:getHash(childHash).object:setParent(hashTreeObj.parent)
+        if self:hashExists(childHash) == false then
+            hashTreeObj.children[i] = i  
+        else
+            local parent = nil
+            if self:hashExists(hashTreeObj.parent) then -- FIX THIS
+                parent = hashTreeObj.object:parent()
+            else
+                parent = self:root()
+            end
+
+            self:getHash(childHash).object:setParent(parent)
+        end
     end
     self._treeHash[object.hash] = nil
 end
@@ -216,19 +240,21 @@ end
 
 function HashTree:destroyCleanly(object)
     if object.name == "Root" then self._queuedForDeletion[object.hash] = nil; return; end
-    object.enabled = false
     if object.destroy then
         object:OnDestroy()
     end
     self:unregisterObject(object)
+    object.enabled = false
+    object.visible = false
     self._queuedForDeletion[object.hash] = nil
     collectgarbage()
 end
 
 function HashTree:destroyImmediately(object)
-    if object.name == "Root" then self._queuedForDeletion[object.hash] = nil; return; end
+    if object.name == "Root" then return; end
     object.enabled = false
-    if object.destroy then
+    object.visible = false
+    if object.OnDestroy then
         object:OnDestroy()
     end
     -- detag object

@@ -4,7 +4,7 @@
 
 local Input = Class("InputService")
 
-Input.Keys = {
+Keys = {
     A = "a",
     B = "b",
     C = "c",
@@ -131,7 +131,7 @@ Input.Keys = {
     Escape = "escape"
 }
 
-Input.MouseButtons = {
+MouseButtons = {
     Left = 1,
     Right = 2,
     Middle = 3,
@@ -187,6 +187,10 @@ function Input:setMousePosition(pos)
     love.mouse.setPosition(pos.x,pos.y)
 end
 
+function Input:isMousePressed(button,...)
+    
+end
+
 --===========================================================================================================================================================
 
 function Input:mouseDown(button,...)
@@ -219,7 +223,7 @@ function Input:mouseMoved(x, y, dx, dy, isTouch)
 end
 
 function Input:mousePressed(x, y, button, istouch, presses)
-    if button == self.MouseButtons.Left then 
+    if button == MouseButtons.Left then 
         self._lmbDown = true 
         self._lmbDownPos = Vector(x,y)
     end
@@ -227,7 +231,7 @@ function Input:mousePressed(x, y, button, istouch, presses)
 end
 
 function Input:mouseReleased(x, y, button, istouch, presses)
-    if button == self.MouseButtons.Left then 
+    if button == MouseButtons.Left then 
         self._lmbDown = false
         self._dragging = false
         self._lmbDragDiff = Vector()

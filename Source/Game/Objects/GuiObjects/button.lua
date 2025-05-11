@@ -7,22 +7,39 @@ function Button:initialize(text)
     GuiObject.initialize(self)
     self.text = text or "New Button"
     self.size = UDim2(0,0,96,32)
-    self.mouseDownOnMe = true
+    self.clickDelay = 1/30
+    self.OnClick = nil
     self.colors = {
         textColor = Color(255,255,255),
         default = Color(80,80,255),
         hover = Color(95,95,255),
         mouseDown = Color(70,70,200),
     }
-    self.OnClick = nil
+    -- private
+    self.mousePressedSignal = nil
+    self._lastClick = 0
+    self._hovering = false
+
+end
+
+function Button:load()
+    self.mousePressedSignal = InputService.OnMousePressed:connect(function(x, y)
+        if self._hovering then
+            if love.timer.getTime()-self._lastClick > self.clickDelay then
+                self._lastClick = love.timer.getTime()
+                self:use()
+            end
+        end
+    end)
 end
 
 function Button:update(dt)
-    if self:IsHovering() then
-        if love.mouse.isDown(1) then
-            self:use()
-        end
-    end
+    self._hovering = self:IsHovering()
+end
+
+function Button:OnDestroy()
+    print("Destroyed button!")
+    self.mousePressedSignal:disconnect()
 end
 
 function Button:use()
@@ -32,7 +49,7 @@ function Button:use()
 end
 
 function Button:draw()
-    if self:IsHovering() then
+    if self._hovering then
         if love.mouse.isDown(1) then
             self.colors.mouseDown:set()
         else

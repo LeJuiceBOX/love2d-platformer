@@ -10,11 +10,11 @@ local Resize = EditorTool:new("Resize")
 Resize.currentIncrement = INCREMENT
 Resize.shiftDown = true
 Resize:edit()
-    :setOnEquip(function()
+:setOnEquip(function()
         print("Resize tool equipped!")
     end)
     :setOnUpdate(function()
-            Resize.shiftDown = love.keyboard.isDown('lshift')
+            Resize.shiftDown = InputService:keyDown(Keys.LeftShift)
     end)
     :setOnKeyPressed(function(key)
         if Resize.targetObject then

@@ -22,7 +22,8 @@ end
 function GameObjectHashTree:destroyAll()
     print("Destroying all gameObjects...")
     for hash,data in pairs(self._treeHash) do
-        self:destroyImmediately(data.object)
+        print(data)
+        self:destroyCleanly(data.object)
     end
 end
 

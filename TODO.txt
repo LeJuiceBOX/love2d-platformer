@@ -1,0 +1,1 @@
+We need to figure out Weak table keys and how we can use them to garbage collect unused objects
